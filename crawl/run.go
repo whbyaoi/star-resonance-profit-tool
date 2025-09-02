@@ -42,7 +42,8 @@ func run(debug bool) (cr CrawlResult, err error) {
 		var tabs []int
 		switch sidebarIndex {
 		case 0:
-			tabs = []int{0, 1}
+			// tabs = []int{0, 1}
+			continue
 		case 1:
 			tabs = []int{0, 1, 2, 3, 4, 5, 6, 7, 8}
 		}
