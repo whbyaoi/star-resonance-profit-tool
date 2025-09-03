@@ -625,14 +625,33 @@ body {
   white-space: normal;
   line-height: 1.5;
   left: 50%;
-  top: 120%;
   transform: translateX(-50%);
   color: var(--text-color);
   font-style: normal;
   transition: opacity 0.3s ease, transform 0.3s ease;
   opacity: 0;
+  
+  /* 智能定位：默认在下方显示 */
+  top: 120%;
+  
+  /* 确保tooltip不会超出视口底部 */
+  max-height: 60vh;
+  overflow-y: auto;
 }
 
+/* 添加新类，用于在靠近底部时向上显示tooltip */
+.comment-cell:hover .comment-tooltip {
+  display: block;
+  opacity: 1;
+}
+
+/* 当tooltip接近页面底部时，向上显示 */
+.goods-row:nth-last-child(-n+3) .comment-tooltip {
+  top: auto;
+  bottom: 120%;
+}
+
+/* 默认三角形指向（向上） */
 .comment-tooltip::before {
   content: '';
   position: absolute;
@@ -655,10 +674,24 @@ body {
   border-bottom: 7px solid white;
 }
 
+/* 靠近底部时三角形指向（向下） */
+.goods-row:nth-last-child(-n+3) .comment-tooltip::before {
+  top: auto;
+  bottom: -8px;
+  border-bottom: none;
+  border-top: 8px solid var(--border-color);
+}
+
+.goods-row:nth-last-child(-n+3) .comment-tooltip::after {
+  top: auto;
+  bottom: -7px;
+  border-bottom: none;
+  border-top: 7px solid white;
+}
+
 .comment-cell:hover .comment-tooltip {
   display: block;
   opacity: 1;
-  transform: translateX(-50%) translateY(0);
 }
 
 /* 响应式布局调整 */
@@ -711,7 +744,7 @@ body {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) !important;
     width: 85%;
     max-width: 300px;
     max-height: 60vh;
@@ -728,7 +761,9 @@ body {
     display: none; /* 在弹出模式下不显示小三角 */
   }
   
-  .comment-cell:hover .comment-tooltip {
-    transform: translate(-50%, -50%); /* 覆盖默认的transform */
+  /* 在移动设备上，无论是否靠近底部，都居中显示tooltip */
+  .goods-row:nth-last-child(-n+3) .comment-tooltip {
+    top: 50%;
+    bottom: auto;
   }
 }
