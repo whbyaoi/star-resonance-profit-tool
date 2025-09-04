@@ -606,19 +606,21 @@ func (i *Good) GenerateAllFlagCombinations() []map[string]bool {
 	allCombinations := []map[string]bool{initialCombination}
 
 	// 处理根节点的所有子节点
-	for _, material := range i.Recipe[0].Materials {
-		childNode, ok := Name2Item[material.Name]
-		if !ok {
-			continue
-		}
+	for idx := range i.Recipe {
+		for _, material := range i.Recipe[idx].Materials {
+			childNode, ok := Name2Item[material.Name]
+			if !ok {
+				continue
+			}
 
-		var newCombinations []map[string]bool
-		for _, combo := range allCombinations {
-			// 为每个现有组合生成子节点的所有可能组合
-			childResults := generateCombinations(childNode, combo, false)
-			newCombinations = append(newCombinations, childResults...)
+			var newCombinations []map[string]bool
+			for _, combo := range allCombinations {
+				// 为每个现有组合生成子节点的所有可能组合
+				childResults := generateCombinations(childNode, combo, false)
+				newCombinations = append(newCombinations, childResults...)
+			}
+			allCombinations = newCombinations
 		}
-		allCombinations = newCombinations
 	}
 
 	// 去重：移除重复的组合
